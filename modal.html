@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		 p,h4{
+            margin:0;
+        }
+        .modal{
+            width: 500px;
+            background-color: #fff;
+            border: 1px solid rgba(0,0,0,.2);
+            border-radius: 6px;
+            box-shadow: 0 3px 9px rgba(0,0,0,.5);
+
+        }
+        .modal-header {
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .modal-content div {
+            padding: 20px;
+        }
+        .modal-footer {
+            padding: 15px;
+            text-align: right;
+            border-top: 1px solid #e5e5e5;
+        }
+        .btn {
+            padding: 5px 15px;
+            border: none;
+            outline: none;
+        }
+        .blue {
+            color: #fff;
+            background-color: #39f;
+            border-color: #39f;
+        }
+	</style>
+	<script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+       <m-modal modal-title="提醒" @on-ok="ok" @on-cancel="cancel"></m-modal>
+       <m-modal>
+       	  <ul slot="modal-Content">
+       	  	 <li v-for="item of list">{{item}}</li>
+       	  </ul>
+       	  <div slot="modal-footer">
+       	  	<span>重置</span>
+       	  </div>
+       </m-modal>
+    </div>
+
+	
+    <script type="text/javascript">
+    	Vue.component("m-modal",{
+    		props:{
+               modalTitle:{
+               	 type:String,
+               	 default:"这是标题"
+               }
+    		},
+            template:`
+             <div class="modal">
+                <div class="modal-header">
+                    <h4>{{modalTitle}}</h4>
+                </div>
+                <div class="modal-content">
+                    <div>
+                      <slot name="modal-Content">内容</slot>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                   <slot name="modal-footer">
+                      <input class="btn blue" type="button" value="确定" @click="okHandle" />
+                      <input class="btn" type="button" value="取消" @click="cancelHandle"/>
+                   </slot>                  
+                </div>
+            </div>
+           `,
+           methods:{
+           	 okHandle(){
+           	 	this.$emit("on-ok");
+           	 },
+           	 cancelHandle(){
+           	 	this.$emit("on-cancel");
+           	 }
+           }
+    	});
+
+    	var list = [..."你好"];
+
+    	new Vue({
+           el:"#app",
+           data:{
+           	list:list
+           },
+           methods:{
+           	ok(){
+           		alert(1);
+           	},
+           	cancel(){
+           		
+           	}
+           }
+    	});
+    </script>
+</body>
+</html>
